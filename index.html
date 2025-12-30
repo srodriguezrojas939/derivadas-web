@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Derivadas Pro - Mobile Ready</title>
+    <title>Calculadora de Derivadas</title>
 
     <script src="https://cdn.jsdelivr.net/npm/nerdamer@1.1.13/nerdamer.core.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/nerdamer@1.1.13/Algebra.js"></script>
@@ -25,10 +25,10 @@
             background: white; 
             display: flex; 
             justify-content: center; 
-            align-items: flex-start; /* Mejor para scroll en móvil */
+            align-items: flex-start; 
             min-height: 100vh; 
             margin: 0; 
-            padding: 10px; /* Menos espacio en los bordes */
+            padding: 10px; 
             box-sizing: border-box;
         }
 
@@ -43,7 +43,7 @@
 
         .calculadora {
             background: #F2F2F2; 
-            padding: 30px 20px; /* Padding reducido para móvil */
+            padding: 30px 20px; 
             border-radius: 35px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
             box-sizing: border-box; 
@@ -53,13 +53,18 @@
         .header-section { text-align: center; margin-bottom: 20px; }
         .header-section h1 { 
             font-family: 'Playfair Display', serif; 
-            font-size: 28px; /* Tamaño optimizado */
+            font-size: 32px; 
             margin: 0; 
             font-weight: 600; 
+            text-transform: lowercase; /* Mantiene el estilo solicitado */
         }
-        .header-section p { font-family: 'Playfair Display', serif; font-size: 16px; margin: 5px 0; }
+        .header-section p { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 18px; 
+            margin: 5px 0; 
+            font-weight: 600;
+        }
 
-        /* Contenedores de fórmulas con scroll para evitar desbordes */
         #preview-container, #resultado {
             background: white; 
             margin-bottom: 20px; 
@@ -70,11 +75,18 @@
             align-items: center; 
             justify-content: center; 
             border: 1px solid #eee;
-            overflow-x: auto; /* Permite deslizar si la fórmula es larga */
+            overflow-x: auto; 
             -webkit-overflow-scrolling: touch;
         }
 
-        label { display: block; font-size: 13px; color: #555; margin: 0 0 5px 10px; font-weight: 600; }
+        label { 
+            display: block; 
+            font-family: 'Open Sans', sans-serif; /* Cambio de fuente solicitado */
+            font-size: 14px; 
+            color: #444; 
+            margin: 0 0 6px 12px; 
+            font-weight: 600; 
+        }
         
         input, select {
             width: 100%; 
@@ -83,7 +95,7 @@
             border-radius: 25px;
             border: 1px solid #ccc; 
             box-sizing: border-box; 
-            font-size: 16px; /* 16px evita el zoom automático en iOS */
+            font-size: 16px; 
             outline: none;
             font-family: 'Open Sans', sans-serif;
             background-color: white;
@@ -92,10 +104,10 @@
         .row { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
-            gap: 10px; 
+            gap: 12px; 
         }
 
-        .botones-container { display: flex; flex-direction: column; gap: 10px; }
+        .botones-container { display: flex; flex-direction: column; gap: 12px; }
 
         .btn-principal {
             width: 100%; 
@@ -108,6 +120,7 @@
             cursor: pointer;
             font-family: 'Open Sans', sans-serif; 
             font-weight: 700;
+            transition: 0.3s;
         }
 
         .btn-secundario {
@@ -115,21 +128,21 @@
             background: white; 
             color: #333; 
             border: 1px solid #ccc;
-            padding: 14px; 
+            padding: 15px; 
             border-radius: 30px; 
             font-size: 14px; 
             cursor: pointer;
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 10px;
+            gap: 12px;
+            font-family: 'Open Sans', sans-serif;
+            transition: 0.3s;
         }
 
-        /* Ajustes específicos para pantallas extra pequeñas */
-        @media (max-width: 400px) {
-            .header-section h1 { font-size: 24px; }
-            .calculadora { padding: 20px 15px; }
-            .row { grid-template-columns: 1fr; } /* Stack vertical en mini-móviles */
+        @media (max-width: 450px) {
+            .header-section h1 { font-size: 28px; }
+            .row { grid-template-columns: 1fr; gap: 0; }
         }
     </style>
 </head>
@@ -138,7 +151,7 @@
 <div class="fade-in">
     <div class="calculadora">
         <div class="header-section">
-            <h1>Calculadora Pro</h1>
+            <h1>calculadora de derivadas</h1>
             <p>√(Raiz) Cuadrada²</p>
         </div>
 
@@ -146,12 +159,12 @@
             <div id="latex-preview">$$ \frac{d}{dx} (\dots) $$</div>
         </div>
 
-        <label>Función a derivar</label>
-        <input id="funcion" placeholder="Ej: sqrt(x) + x^2" type="text" oninput="actualizarVistaPrevia()" autocalm="off">
+        <label>función a derivar</label>
+        <input id="funcion" placeholder="Ej: sqrt(x) + sin(x)" type="text" oninput="actualizarVistaPrevia()">
 
         <div class="row">
             <div>
-                <label>Variable</label>
+                <label>variable</label>
                 <select id="variable" onchange="actualizarVistaPrevia()">
                     <option value="x">dx</option>
                     <option value="t">dt</option>
@@ -159,16 +172,16 @@
                 </select>
             </div>
             <div>
-                <label>Orden</label>
+                <label>orden</label>
                 <select id="orden" onchange="actualizarVistaPrevia()">
-                    <option value="1">1ra Derivada</option>
-                    <option value="2">2da Derivada</option>
+                    <option value="1">1ra derivada</option>
+                    <option value="2">2da derivada</option>
                 </select>
             </div>
         </div>
 
         <div style="margin-bottom: 15px;">
-            <label>Evaluar en el punto</label>
+            <label>evaluar en el punto</label>
             <input id="puntoEval" placeholder="Opcional: 2" type="text">
         </div>
 
@@ -178,13 +191,13 @@
             </button>
 
             <button onclick="evaluarEnPunto()" class="btn-secundario" style="background: #EAEAEA; border:none; font-weight:600;">
-                <img src="https://cdn-icons-png.flaticon.com/512/1625/1625048.png" width="18">
-                Evaluar punto
+                <img src="https://cdn-icons-png.flaticon.com/512/565/565665.png" width="20">
+                Evaluar en un punto
             </button>
 
             <button onclick="irAPasoAPasoDer()" class="btn-secundario">
                 <img src="https://cdn-icons-png.flaticon.com/512/2374/2374367.png" width="20">
-                Paso a paso
+                Ver paso a paso
             </button>
         </div>
 
@@ -227,9 +240,9 @@ function calcularDerivada() {
 
     try {
         let derivada = nerdamer.diff(normalizar(input), v, orden);
-        out.innerHTML = `$$ \\frac{d^{${orden === 1 ? "" : "2"}}}{d${v}^{${orden === 1 ? "" : "2"}}} = ${derivada.toTeX()} $$`;
+        out.innerHTML = `$$ \frac{d^{${orden === 1 ? "" : "2"}}}{d${v}^{${orden === 1 ? "" : "2"}}} = ${derivada.toTeX()} $$`;
         MathJax.typesetPromise([out]);
-    } catch (e) { out.innerHTML = "<small style='color:red'>Error de escritura</small>"; }
+    } catch (e) { out.innerHTML = "<small style='color:red'>Error en la función</small>"; }
 }
 
 function evaluarEnPunto() {
